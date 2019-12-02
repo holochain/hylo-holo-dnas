@@ -30,7 +30,22 @@ pub const AGENT_MESSAGE_THREAD_LINK_TYPE: &str = "agent_message_thread";
 
 #[derive(Serialize, Deserialize, Debug, Clone, DefaultJson)]
 pub struct Thread {
-    pub participants: Vec<String>,
+    pub participants: Vec<String>
+}
+
+impl Thread {
+    pub fn with_address(&self, address: Address) -> ThreadWithAddress {
+        ThreadWithAddress {
+            address,
+            participants: self.participants.clone()
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, DefaultJson)]
+pub struct ThreadWithAddress {
+    pub address: Address,
+    pub participants: Vec<String>
 }
 
 pub fn get_threads() -> ZomeApiResult<Vec<Address>> {
@@ -43,19 +58,19 @@ pub fn get_threads() -> ZomeApiResult<Vec<Address>> {
 pub fn create_thread(participant_ids: Vec<String>) -> ZomeApiResult<Address> {
     let mut participant_agent_ids = participant_ids.clone();
     participant_agent_ids.push(AGENT_ADDRESS.to_string()); // add this agent to the list
+    let thread = Thread {
+        participants: participant_agent_ids.clone(),
+    };
     let thread_entry = Entry::App(
         THREAD_ENTRY_TYPE.into(),
-        Thread {
-            participants: participant_agent_ids.clone(),
-        }
-        .into(),
+        thread.clone().into(),
     );
     let entry_addr = hdk::commit_entry(&thread_entry)?;
 
     for participant_id in participant_agent_ids {
         hdk::link_entries(&participant_id.into(), &entry_addr, AGENT_MESSAGE_THREAD_LINK_TYPE, "")?;
     }
-
+    let _ = hdk::emit_signal("new_thread", thread.with_address(entry_addr.clone()));
     Ok(entry_addr)
 }
 

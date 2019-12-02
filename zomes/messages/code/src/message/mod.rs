@@ -67,6 +67,7 @@ pub fn create(thread_address: Address, text: String, timestamp: String) -> ZomeA
     );
     let message_addr = hdk::commit_entry(&message_entry)?;
     utils::link_entries_bidir(&message_addr, &thread_address, MESSAGE_MESSAGE_THREAD_LINK_TYPE, MESSAGE_LINK_TYPE, "", "")?;
+    let _ = hdk::emit_signal("new_message", message.with_address(message_addr.clone()));
     Ok(message.with_address(message_addr))
 }
 

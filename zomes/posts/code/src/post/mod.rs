@@ -99,6 +99,8 @@ pub fn create(base: String, title: String, details: String, post_type: String, a
         ""
     )?;
 
+    let _ = hdk::emit_signal("new_post", post.with_address(post_address.clone()));
+    
     Ok(post.with_address(post_address))
 }
 

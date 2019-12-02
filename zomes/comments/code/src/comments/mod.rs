@@ -91,6 +91,7 @@ pub fn create(base: String, text: String, timestamp: Iso8601) -> ZomeApiResult<C
         COMMENT_LINK_TYPE,
         ""
     )?;
+    let _ = hdk::emit_signal("new_comment", comment.with_address(address.clone()));
 
     Ok(comment.with_address(address))
 }
