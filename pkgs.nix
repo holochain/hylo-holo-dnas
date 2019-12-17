@@ -1,4 +1,4 @@
 import (fetchTarball {
-  url = "https://github.com/Holo-Host/holo-nixpkgs/archive/20ff116074ff08de24023ab66ac874c6e7b3c289.tar.gz";
-  sha256 = "1w0lcrhmnwpyrzbfyg09a3iy62ik77p3axxkq5m9l7gia44gixrx";
+  url = "https://github.com/Holo-Host/holo-nixpkgs/archive/998bc9e6a8e61bde47485e0ef90b51cec70a3786.tar.gz";
+  sha256 = "127021rzh9dq87a6v118c5n6jrjhhxv4hdvvprra21jmgfw8nk73";
 })

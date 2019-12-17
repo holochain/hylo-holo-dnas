@@ -1,4 +1,4 @@
-{ pkgs ? import ./pkgs.nix {} }:
+{ pkgs ? import ./pkgs.nix, shell ? false }:
 
 with pkgs;
 
@@ -8,6 +8,8 @@ in
 
 {
   hylo-holo-dnas = buildDNA {
+    inherit shell;
+
     name = "hylo-holo-dnas";
     src = gitignoreSource ./.;
 
