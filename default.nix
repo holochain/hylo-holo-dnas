@@ -1,4 +1,4 @@
-{ pkgs ? import ./pkgs.nix, shell ? false }:
+{ pkgs ? import ./pkgs.nix {}, shell ? false }:
 
 with pkgs;
 
@@ -13,7 +13,10 @@ in
     name = "hylo-holo-dnas";
     src = gitignoreSource ./.;
 
-    nativeBuildInputs = [ pkgs.libiconv ]
+    nativeBuildInputs = [
+      python
+      libiconv
+    ]
     ++ lib.optionals stdenv.isDarwin [ CoreServices ];
   };
 }
